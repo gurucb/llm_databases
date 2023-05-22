@@ -104,22 +104,34 @@
                     var chartData = tableData.map(function (item) {
                         return item.TestID;
                     });
+                    var chartData1 = tableData.map(function (item) {
+                            return item.DeploymentID;
+                    });
 
                     var ctx = document.getElementById('myChart').getContext('2d');
                     var myChart = new Chart(ctx, {
-                        type: 'bar',
+                        type: 'line',
                         data: {
-                            labels: ['Test ID'],
+                             labels: chartData,
                             datasets: [{
-                                label: 'Chart Data',
-                                data: chartData,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                label: 'DeploymentID',
+                                data: chartData1,
+                                backgroundColor: 'rgb(54, 162, 235)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 1
                             }]
                         },
                         options: {
-                            // Chart options
+                                scales: {
+                                    y: {
+                                        suggestedMin: 0,
+                                        suggestedMax: 5
+                                    },
+                                    x: {
+                                        suggestedMin: 0,
+                                        suggestedMax: 5
+                                    }
+                                }
                         }
                     });
                 });

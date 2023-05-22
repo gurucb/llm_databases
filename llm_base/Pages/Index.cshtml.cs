@@ -79,7 +79,7 @@ namespace WebSyntheticGPTKQL.Pages
                         },
                         {
                             ""TestID"": 3,
-                            ""DeploymentID"": 102,
+                            ""DeploymentID"": 110,
                             ""WorkloadID"": 202,
                             ""TestExecConfigID"": 302,
                             ""ExecutionID"": 402,
@@ -101,7 +101,7 @@ namespace WebSyntheticGPTKQL.Pages
                         },
                         {
                             ""TestID"": 4,
-                            ""DeploymentID"": 102,
+                            ""DeploymentID"": 202,
                             ""WorkloadID"": 202,
                             ""TestExecConfigID"": 302,
                             ""ExecutionID"": 402,
