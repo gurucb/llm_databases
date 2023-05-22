@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    var tableData = @Model.DataSet.RootElement.GetProperty("TestRunDetails");
+    var tableData = @Model.DataSet.RootElement.GetProperty("data");
 }
 
 
@@ -92,7 +92,7 @@
             
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    var tableData = @Html.Raw(Json.Serialize(@Model.DataSet.RootElement.GetProperty("TestRunDetails")));
+                    var tableData = @Html.Raw(Json.Serialize(@Model.DataSet.RootElement.GetProperty("data")));
                     var labels = Object.keys(tableData[0]);
 
 
