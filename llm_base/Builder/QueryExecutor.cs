@@ -2,6 +2,6 @@
 {
     public abstract class QueryExecutor : IQueryExecutor
     {
-        public abstract void executeQuery(string queryType, string query);
+        public abstract Task<String> executeQuery(string queryType, string query);
     }
 }

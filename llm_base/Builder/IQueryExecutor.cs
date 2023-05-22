@@ -2,6 +2,6 @@
 {
     public interface IQueryExecutor
     {
-        public void executeQuery(String queryType, String query);
+        public Task<String> executeQuery(String queryType, String query);
     }
 }

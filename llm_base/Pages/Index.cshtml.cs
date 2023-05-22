@@ -34,7 +34,7 @@ namespace WebSyntheticGPTKQL.Pages
             WelcomeMessage = "SyntheticGPT KQL Builder";
             string jsonData = @"
                 {
-                    ""TestRunDetails"": [
+                    ""data"": [
                         {
                             ""TestID"": 1,
                             ""DeploymentID"": 101,
@@ -136,7 +136,7 @@ namespace WebSyntheticGPTKQL.Pages
             
                 UserQuery = Request.Form["UserQuery"];
                 TableName = Request.Form["TableName"];
-                String userPrompt = UserQuery + " " + Request.Form["dbs"];
+                String userPrompt = UserQuery + " " + Request.Form["TableName"];
                 PromptController promptController = new PromptController();
                 promptController.setPersona("user");
                 promptController.initializePromptController();
@@ -147,7 +147,12 @@ namespace WebSyntheticGPTKQL.Pages
                 LLMClient gptClient = LLMApater.getLLMInstance();
                 gptClient.setProperties();
                 KQLQuery = await gptClient.invokeLLMCommandAsync(prompts, "");
+                Query = "Select " + KQLQuery;
 
+                QueryExecutor executor = QueryExecutionAdapter.getQueryExecutor();
+                String jsonData = executor.executeQuery("sql", Query).Result.ToString();
+               
+/*
                 string jsonData =  @"
                 {
                     ""TestRunDetails"": [
@@ -195,13 +200,9 @@ namespace WebSyntheticGPTKQL.Pages
                             ""InsertDateUTC"": ""2023-05-18"",
                             ""InsertTimeUTC"": ""11:05:00Z""
                         }]}";
-
+                */
                 DataSet = JsonDocument.Parse(jsonData);
-                Query = "Select " + KQLQuery;
-
-                QueryExecutor executor = QueryExecutionAdapter.getQueryExecutor();
-                executor.executeQuery("sql", Query);
-
+                
             }
 
                 

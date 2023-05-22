@@ -35,7 +35,9 @@ def execute_read_sql_query(query):
         row = cursor.fetchone() 
         data=[]        
         while row:
+            
             logging.warning(row) 
+            
             data.append(row)
             row = cursor.fetchone()
         res["status"]=0
