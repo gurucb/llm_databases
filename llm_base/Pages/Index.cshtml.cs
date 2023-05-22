@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SyntheticsGPTKQL;
+using WebSyntheticGPTKQL.Builder;
 
 namespace WebSyntheticGPTKQL.Pages
 {
@@ -14,6 +15,8 @@ namespace WebSyntheticGPTKQL.Pages
         public string Prompts { get; set; }
 
         public string KQLQuery { get; set; }
+
+        public string Query { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -44,6 +47,10 @@ namespace WebSyntheticGPTKQL.Pages
                 LLMClient gptClient = LLMApater.getLLMInstance();
                 gptClient.setProperties();
                 KQLQuery = await gptClient.invokeLLMCommandAsync(prompts, "");
+                Query = "Select " + KQLQuery;
+
+                QueryExecutor executor = QueryExecutionAdapter.getQueryExecutor();
+                executor.executeQuery("sql", Query);
             }
         }
 
