@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SyntheticsGPTKQL;
 using System.Text.Json;
+using WebSyntheticGPTKQL.Builder;
 
 namespace WebSyntheticGPTKQL.Pages
 {
@@ -19,6 +20,7 @@ namespace WebSyntheticGPTKQL.Pages
         public JsonDocument DataSet { get; set; }
 
         public string TableName { get; set; }
+        public string Query { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -195,8 +197,16 @@ namespace WebSyntheticGPTKQL.Pages
                         }]}";
 
                 DataSet = JsonDocument.Parse(jsonData);
+                Query = "Select " + KQLQuery;
+
+                QueryExecutor executor = QueryExecutionAdapter.getQueryExecutor();
+                executor.executeQuery("sql", Query);
+
+            }
+
+                
             
-        }
+
         }
 
         
