@@ -1,11 +1,12 @@
 ﻿@page
 @model IndexModel
 @{
-    <label>@Model.WelcomeMessage</label>
+    var tableData = @Model.DataSet.RootElement.GetProperty("data");
 }
 
+
 <div class="text-center">
-    <h2 >SyntheticGPT KQL Builder</h2>
+    <h2>@Model.WelcomeMessage</h2>
 </div>
 <br />
 <div>
@@ -14,31 +15,130 @@
             <label class="form-label">User Query</label>
             <textarea class="form-control" name="UserQuery" id="UserQuery" placeholder="Enter your query" required cols="20" rows="5">@Model.UserQuery</textarea>
         </div>
-        <div class="mb-3">
-            <label class="form-label">User Query</label>
-            <select name="dbs">
-                <option>tests</option>
-                <option>deployments</option>
-                <option>infra</option>
-                <option>sybase</option>
-                <option>sockperf</option>
-                <option>cassandra</option>
+       
+        <div class="input-group mb-3">
+            <select class="custom-select" id="TableName" name="TableName">
+                <option selected>Choose Table...</option>
+                <option value="tests">tests</option>
+                <option value="deployments">deployments</option>
+                <option value="sybase">sybase</option>
+                <option value="sockperf">sockperf</option>
+                <option value="cassandra">cassandra</option>
+                <option value="infra">infra</option>
             </select>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary" asp-page-handler="OnPost">Execute Query</button>
+            </div>
         </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary mb-3" asp-page-handler="OnPost">Generate prompts and KQL Query</button>
+
+        <p>
+            <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#prompts" aria-expanded="false" aria-controls="promptsCollapse">Show Prompts</button>
+            <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#query" aria-expanded="false" aria-controls="queryCollapse">Show Query</button>
+        </p>
+        <div class="row">
+            <div class="col">
+                <div class="collapse multi-collapse" id="prompts">
+                    <div class="card card-body">
+                        <textarea readonly class="form-control" cols="20" id="Prompts" name="Prompts" rows="12">@Model.Prompts</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="collapse multi-collapse" id="query">
+                    <div class="card card-body">
+                        <textarea readonly class="form-control" cols="20" id="KQLQuery" name="KQLQuery" rows="12">@Model.KQLQuery</textarea>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Prompts</label>
-            <textarea readonly class="form-control" cols="20" id="Prompts" name="Prompts" rows="12">@Model.Prompts</textarea>
+
+
+        <div class="mb-3 table-responsive">
+            <table class="table table-dark table-striped table-sm table-hover">
+                <thead>
+                    <tr>
+                        @foreach (var property in tableData[0].EnumerateObject())
+                        {
+                            <th>@property.Name</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in tableData.EnumerateArray())
+                    {
+                        <tr>
+                            @foreach (var property in row.EnumerateObject())
+                            {
+                                <td>@property.Value.ToString()</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-        @*<div class="mb-3">
-        <button type="submit" class="btn btn-primary mb-3">Generate KQL Query</button>
-        </div>*@
-        <div class="mb-3">
-            <label class="form-label">LLM Query</label>
-            <textarea readonly class="form-control" cols="20" id="KQLQuery" name="KQLQuery" rows="12">@Model.KQLQuery</textarea>
+
+
+        <div class="md-3">
+            <p>
+                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#chart" aria-expanded="false" aria-controls="chartCollapse">Show Chart</button>
+            </p>
+        @section Scripts {
+
+                <div class="container">
+                    <div class="collapse multi-collapse" id="chart">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var tableData = @Html.Raw(Json.Serialize(@Model.DataSet.RootElement.GetProperty("data")));
+                    var labels = Object.keys(tableData[0]);
+
+
+                    //var jsonData = @Html.Raw(@Model.DataSet);
+                    // Parse the JSON data
+                    //var data = JSON.parse(jsonData);
+
+                    // Extract the chart data
+                    var chartData = tableData.map(function (item) {
+                        return item.TestID;
+                    });
+                    var chartData1 = tableData.map(function (item) {
+                            return item.DeploymentID;
+                    });
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                             labels: chartData,
+                            datasets: [{
+                                label: 'DeploymentID',
+                                data: chartData1,
+                                backgroundColor: 'rgb(54, 162, 235)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                                scales: {
+                                    y: {
+                                        suggestedMin: 0,
+                                        suggestedMax: 5
+                                    },
+                                    x: {
+                                        suggestedMin: 0,
+                                        suggestedMax: 5
+                                    }
+                                }
+                        }
+                    });
+                });
+            </script>
+        }
         </div>
+
     </form>
     
 </div>
