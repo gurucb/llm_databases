@@ -5,13 +5,10 @@ namespace SyntheticsGPTKQL
 {
     internal class UserNLPClient : NLPProvider
     {
-        Dictionary<String,String> tables;
+
         public UserNLPClient() 
         {
-            tables = new Dictionary<String, String>();
-            tables.Add("sybase", "Sybase_Results");
-            tables.Add("sockperf", "sockperf_results");
-            tables.Add("common", "TestRunDetails,DeploymentMetadata,TestInfraMetadata");
+           
         }
         public override List<String> getEntities(String userPrompt)
         {
@@ -19,27 +16,27 @@ namespace SyntheticsGPTKQL
             List<String> tableNames = new List<String>();
 
             String[] words = userPrompt.Split(' ');
-            if (words.Contains("sybase"))
+            if (words.Contains("Sybase_Results"))
             {
-                tableName = null;
-                _ = tables.TryGetValue("sybase", out tableName);
-                tableNames.Add(tableName);
+                //tableName = null;
+               
+                tableNames.Add("Sybase_Results");
             }
-            if (words.Contains("cassandra"))
+            //if (words.Contains("cassandra"))
+            //{
+                //tableName = null;
+       
+                //tableNames.Add(tableName);
+            //}
+            if (words.Contains("SockPerf_Results"))
             {
-                tableName = null;
-                _ = tables.TryGetValue("sybase", out tableName);
-                tableNames.Add(tableName);
-            }
-            if (words.Contains("sockperf"))
-            {
-                tableName = null;
-                _ = tables.TryGetValue("sockperf", out tableName);
-                tableNames.Add(tableName);
+                //tableName = null;
+                
+                tableNames.Add("SockPerf_Results");
                 tableNames.Add("DeploymentMetadata");
                 tableNames.Add("TestInfraMetadata");
             }
-            if (words.Contains("tests"))
+            if (words.Contains("TestRunDetails"))
             {
                 tableNames.Add("TestRunDetails");
 
@@ -48,9 +45,10 @@ namespace SyntheticsGPTKQL
             {
                 tableNames.Add("DeploymentMetadata");
             }
-            if (words.Contains("infra"))
+            if (words.Contains("TestInfraMetadata"))
             {
                 tableNames.Add("TestInfraMetadata");
+                
             }
 
             

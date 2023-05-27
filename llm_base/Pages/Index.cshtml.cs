@@ -136,7 +136,7 @@ namespace WebSyntheticGPTKQL.Pages
             
                 UserQuery = Request.Form["UserQuery"];
                 TableName = Request.Form["TableName"];
-                String userPrompt = UserQuery + " " + Request.Form["TableName"];
+                String userPrompt = UserQuery + " from " + Request.Form["TableName"];
                 PromptController promptController = new PromptController();
                 promptController.setPersona("user");
                 promptController.initializePromptController();

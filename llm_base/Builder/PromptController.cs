@@ -34,6 +34,7 @@ namespace SyntheticsGPTKQL
         public List<String> buildPrompts(String userPrompt)
         {
     
+    
             tableNames = nlpClient.getEntities(userPrompt);
             tableSchema = kqlMetadataManager.getObjectMetadata(tableNames);
             prompts = promptBuilder.buildPrompts(tableSchema,userPrompt);

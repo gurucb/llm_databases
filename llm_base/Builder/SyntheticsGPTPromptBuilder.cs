@@ -14,7 +14,7 @@ namespace SyntheticsGPTKQL
             List<String> prompts = new List<String>();
             System.Console.WriteLine("**************************");
 
-            prompts.Add("Given an input generate a syntactically correct SQL Query Language. Do not include unnecessary joins or conditions");
+            prompts.Add("Given an input generate a syntactically correct SQL Query Language for Microsoft SQL Server.");
             prompts.Add("### SQL Tables with their properties:\n");
             foreach(String table in tableschema)
             {
