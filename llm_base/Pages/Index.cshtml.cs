@@ -31,7 +31,7 @@ namespace WebSyntheticGPTKQL.Pages
 
         public void OnGet()
         {
-            WelcomeMessage = "SyntheticGPT KQL Builder";
+            WelcomeMessage = "Synthetics LLM Query Builder";
             string jsonData = @"
                 {
                     ""data"": [
@@ -131,6 +131,7 @@ namespace WebSyntheticGPTKQL.Pages
 
         public async Task OnPost()
         {
+            WelcomeMessage = "Synthetics LLM Query Builder";
             if (ModelState.IsValid)
             {
             
@@ -147,60 +148,16 @@ namespace WebSyntheticGPTKQL.Pages
                 LLMClient gptClient = LLMApater.getLLMInstance();
                 gptClient.setProperties();
                 KQLQuery = await gptClient.invokeLLMCommandAsync(prompts, "");
-                Query = "Select " + KQLQuery;
+                Query = "Select " + KQLQuery.Replace("\n", " ");
 
                 QueryExecutor executor = QueryExecutionAdapter.getQueryExecutor();
                 String jsonData = executor.executeQuery("sql", Query).Result.ToString();
-               
-/*
-                string jsonData =  @"
+                if (jsonData.Length == 0) 
                 {
-                    ""TestRunDetails"": [
-                        {
-                            ""TestID"": 1,
-                            ""DeploymentID"": 101,
-                            ""WorkloadID"": 201,
-                            ""TestExecConfigID"": 301,
-                            ""ExecutionID"": 401,
-                            ""TestName"": ""Test 1"",
-                            ""TestInvocation"": ""Invocation 1"",
-                            ""IterationStartTime"": ""2023-05-18T10:00:00Z"",
-                            ""IterationEndTime"": ""2023-05-18T10:05:00Z"",
-                            ""EnvironmentName"": ""Environment 1"",
-                            ""ErrorReporte"": false,
-                            ""ErrorDescription"": """",
-                            ""Iteration"": 1,
-                            ""StartTime"": ""2023-05-18T10:00:00Z"",
-                            ""EndTime"": ""2023-05-18T10:05:00Z"",
-                            ""ParseTimeUTC"": ""2023-05-18T10:05:00Z"",
-                            ""PersistenceId"": ""ID001"",
-                            ""InsertDateTimeUTC"": ""2023-05-18T10:05:00Z"",
-                            ""InsertDateUTC"": ""2023-05-18"",
-                            ""InsertTimeUTC"": ""10:05:00Z""
-                        },
-                        {
-                            ""TestID"": 2,
-                            ""DeploymentID"": 102,
-                            ""WorkloadID"": 202,
-                            ""TestExecConfigID"": 302,
-                            ""ExecutionID"": 402,
-                            ""TestName"": ""Test 2"",
-                            ""TestInvocation"": ""Invocation 2"",
-                            ""IterationStartTime"": ""2023-05-18T11:00:00Z"",
-                            ""IterationEndTime"": ""2023-05-18T11:05:00Z"",
-                            ""EnvironmentName"": ""Environment 2"",
-                            ""ErrorReporte"": true,
-                            ""ErrorDescription"": ""Error occurred"",
-                            ""Iteration"": 1,
-                            ""StartTime"": ""2023-05-18T11:00:00Z"",
-                            ""EndTime"": ""2023-05-18T11:05:00Z"",
-                            ""ParseTimeUTC"": ""2023-05-18T11:05:00Z"",
-                            ""PersistenceId"": ""ID002"",
-                            ""InsertDateTimeUTC"": ""2023-05-18T11:05:00Z"",
-                            ""InsertDateUTC"": ""2023-05-18"",
-                            ""InsertTimeUTC"": ""11:05:00Z""
-                        }]}";
-                */
+                    jsonData = @"{""data"": [{
+                            ""Results"": ""No records in DB""}]}";
+                }
+               
                 DataSet = JsonDocument.Parse(jsonData);
                 
             }
