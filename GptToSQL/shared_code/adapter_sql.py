@@ -37,7 +37,7 @@ def execute_read_sql_query(query):
             row_data={}
             idx=0
             for column_name in column_names:
-                 row_data[column_name]=row[idx]
+                 row_data[column_name]=str(row[idx])
                  idx=idx+1
 
             logging.warning(row) 

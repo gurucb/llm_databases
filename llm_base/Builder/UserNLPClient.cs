@@ -22,12 +22,13 @@ namespace SyntheticsGPTKQL
                
                 tableNames.Add("Sybase_Results");
             }
-            //if (words.Contains("cassandra"))
-            //{
-                //tableName = null;
-       
-                //tableNames.Add(tableName);
-            //}
+            if (words.Contains("CassandraTestSummary"))
+            {
+                tableNames.Add("CassandraTestSummary");
+                tableNames.Add("DeploymentMetadata");
+                tableNames.Add("TestInfraMetadata");
+
+            }
             if (words.Contains("SockPerf_Results"))
             {
                 //tableName = null;
@@ -39,9 +40,11 @@ namespace SyntheticsGPTKQL
             if (words.Contains("TestRunDetails"))
             {
                 tableNames.Add("TestRunDetails");
+                tableNames.Add("DeploymentMetadata");
+                tableNames.Add("TestInfraMetadata");
 
             }
-            if (words.Contains("deployments"))
+            if (words.Contains("DeploymentMetadata"))
             {
                 tableNames.Add("DeploymentMetadata");
             }

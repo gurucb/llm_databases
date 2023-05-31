@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    var tableData = @Model.DataSet.RootElement.GetProperty("data");
+    //var tableData = @Model.DataSet.RootElement.GetProperty("data");
 }
 
 
@@ -15,7 +15,7 @@
             <label class="form-label">User Query</label>
             <textarea class="form-control" name="UserQuery" id="UserQuery" placeholder="Enter your query" required cols="20" rows="5">@Model.UserQuery</textarea>
         </div>
-       
+
         <div class="input-group mb-3">
             <select class="custom-select" id="TableName" name="TableName">
                 <option selected>Choose Table...</option>
@@ -51,94 +51,198 @@
                 </div>
             </div>
         </div>
-
-
-        <div class="mb-3 table-responsive">
-            <table class="table table-dark table-striped table-sm table-hover">
-                <thead>
-                    <tr>
-                        @foreach (var property in tableData[0].EnumerateObject())
-                        {
-                            <th>@property.Name</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var row in tableData.EnumerateArray())
-                    {
+        @if (Model.DataSet != null)
+        {
+            <div class="mb-3 table-responsive">
+                <table class="table table-dark table-striped table-sm table-hover">
+                    <thead>
                         <tr>
-                            @foreach (var property in row.EnumerateObject())
+                            @foreach (var property in @Model.DataSet.RootElement.GetProperty("data")[0].EnumerateObject())
                             {
-                                <td>@property.Value.ToString()</td>
+                                <th>@property.Name</th>
                             }
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in @Model.DataSet.RootElement.GetProperty("data").EnumerateArray())
+                        {
+                            <tr>
+                                @foreach (var property in row.EnumerateObject())
+                                {
+                                    <td>@property.Value.ToString()</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
 
-        <div class="md-3">
-            <p>
-                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#chart" aria-expanded="false" aria-controls="chartCollapse">Show Chart</button>
-            </p>
-        @section Scripts {
+
+            <div class="md-3">
+                <p>
+                    <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#chart" aria-expanded="false" aria-controls="chartCollapse">Show Chart</button>
+                </p>
+                @section Scripts {
 
                 <div class="container">
                     <div class="collapse multi-collapse" id="chart">
                         <canvas id="myChart"></canvas>
+
                     </div>
+                    <!--<canvas id="line"></canvas>-->
                 </div>
-            
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var tableData = @Html.Raw(Json.Serialize(@Model.DataSet.RootElement.GetProperty("data")));
-                    var labels = Object.keys(tableData[0]);
 
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var tableData = @Html.Raw(Json.Serialize(@Model.DataSet.RootElement.GetProperty("data")));
+                        var labels = Object.keys(tableData[0]);
 
-                    //var jsonData = @Html.Raw(@Model.DataSet);
-                    // Parse the JSON data
-                    //var data = JSON.parse(jsonData);
+                        var dates = tableData.map(function (item) {
+                            return moment(item.Date, "YYYY-MM-DD").format("YYYY-MM-DD");
+                        });
 
-                    // Extract the chart data
-                    var chartData = tableData.map(function (item) {
-                        return item.TestID;
-                    });
-                    var chartData1 = tableData.map(function (item) {
-                            return item.DeploymentID;
-                    });
+                        var logicalIODate = tableData.map(function (item) {
+                            //console.log(item);
+                            //console.log(item.keys)
+                            return {
+                                x: moment(item.Date, "YYYY-MM-DD").format("YYYY-MM-DD"),
+                                //y: item["Avg Logical IO"]
+                                y: item[Object.keys(item)[1]]
+                                //console.log()
+                            };
+                        });
+                        console.log(logicalIODate);
+                        var physicalIOData = tableData.map(function (item) {
+                            return {
+                                x: moment(item.Date, "YYYY-MM-DD").format("YYYY-MM-DD"),
+                                y: item["Avg Physical IO"]
+                            };
+                        });
 
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                             labels: chartData,
-                            datasets: [{
-                                label: 'DeploymentID',
-                                data: chartData1,
-                                backgroundColor: 'rgb(54, 162, 235)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: dates,
+                                datasets: [{
+                                    label: 'Average Logical IO',
+                                    data: logicalIODate,
+                                    backgroundColor: 'rgb(54, 162, 235)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Average Physical IO',
+                                    data: logicalIODate,
+                                    backgroundColor: 'rgb(54, 162, 235)',
+                                    borderColor: 'rgb(178, 34, 34)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
                                 scales: {
-                                    y: {
-                                        suggestedMin: 0,
-                                        suggestedMax: 5
-                                    },
                                     x: {
-                                        suggestedMin: 0,
-                                        suggestedMax: 5
+                                        type: 'time',
+                                        time: {
+                                            parser: 'YYYY-MM-DD',
+                                            tooltipFormat: 'YYYY-MM-DD',
+                                            unit: 'day',
+                                            displayFormats: {
+                                                day: 'YYYY-MM-DD'
+                                            }
+                                        }
                                     }
                                 }
-                        }
+                            }
+                        });
+
+                        //var timeFormat = 'YYYY-MM-DD';
+                        //var lineChart = document.getElementById('line').getContext('2d');
+
+                        //var config = {
+                        //    type: 'line',
+                        //    data: {
+                        //        datasets: [
+                        //            {
+                        //                label: "Avg Logical IO",
+                        //                backgroundColor: "#fff",
+                        //                borderWidth: 1,
+                        //                pointBorderWidth: 1,
+                        //                borderColor: "#f00",
+                        //                data: logicalIODate,
+                        //                fill: false,
+                        //                borderColor: 'red'
+                        //            },
+                        //            {
+                        //                label: "Avg Physical IO",
+                        //                borderWidth: 1,
+                        //                pointBorderWidth: 0,
+                        //                backgroundColor: "#fff",
+                        //                data: physicalIOData,
+                        //                fill: false,
+                        //                borderColor: 'blue'
+                        //            }
+                        //        ]
+                        //    },
+                        //    options: {
+                        //        legend: {
+                        //            display: true,
+                        //            labels: {
+                        //                usePointStyle: true,
+                        //            },
+                        //            onClick: () => { }, // disable legend onClick functionality that filters datasets
+                        //        },
+                        //        responsive: true,
+                        //        title: {
+                        //            display: true,
+                        //            text: "Chart.js Time Scale"
+                        //        },
+                        //        elements: {
+                        //            point: {
+                        //                radius: 0,
+                        //                hitRadius: 5,
+                        //                hoverRadius: 3,
+                        //            },
+                        //        },
+                        //        scales: {
+                        //            x :{
+                        //                type: "time",
+                        //                time: {
+                        //                    format: timeFormat,
+                        //                    tooltipFormat: 'll'
+                        //                },
+                        //                displayFormats: {
+                        //                    year: 'YYYY'
+                        //                },
+                        //                scaleLabel: {
+                        //                    display: true,
+                        //                    labelString: 'Date'
+                        //                }
+                        //            },
+                        //            y: {
+                        //                scaleLabel: {
+                        //                    display: true,
+                        //                    labelString: 'value'
+                        //                }
+                        //            }
+                        //        }
+                        //    }
+                        //};
+
+                        //var myLineChart = new Chart(lineChart, config);
+
                     });
-                });
-            </script>
+                </script>
+            }
+            </div>
         }
-        </div>
 
     </form>
-    
+
 </div>
