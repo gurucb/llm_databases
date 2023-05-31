@@ -11,6 +11,7 @@
     <PackageReference Include="Azure.Core" Version="1.32.0" />
     <PackageReference Include="IKVM" Version="8.2.1" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AI.OpenAI" Version="0.14.547.1-preview" />
+    <PackageReference Include="Moment.js" Version="2.29.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Stanford.NLP.CoreNLP" Version="4.5.0" />
   </ItemGroup>
