@@ -148,6 +148,7 @@ namespace WebSyntheticGPTKQL.Pages
                 LLMClient gptClient = LLMApater.getLLMInstance();
                 gptClient.setProperties();
                 KQLQuery = await gptClient.invokeLLMCommandAsync(prompts, "");
+                
                 Query = "Select " + KQLQuery.Replace("\n", " ");
 
                 QueryExecutor executor = QueryExecutionAdapter.getQueryExecutor();

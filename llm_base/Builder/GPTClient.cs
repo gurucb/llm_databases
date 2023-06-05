@@ -23,7 +23,7 @@ namespace SyntheticsGPTKQL
 
             Response<Completions> completionsResponse = await oaiClient.GetCompletionsAsync
                 (
-                    deploymentOrModelName: "syntheticsGPTKQL",
+                    deploymentOrModelName: "syntheticsKQL",
                     new CompletionsOptions()
                     {
                         

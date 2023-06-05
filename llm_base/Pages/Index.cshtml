@@ -20,10 +20,10 @@
             <select class="custom-select" id="TableName" name="TableName">
                 <option selected>Choose Table...</option>
                 <option value="TestRunDetails">tests</option>
-                <option value="deployments">deployments</option>
+                <option value="DeploymentMetadata">deployments</option>
                 <option value="Sybase_Results">sybase</option>
                 <option value="SockPerf_Results">sockperf</option>
-                <option value="cassandra">cassandra</option>
+                <option value="CassandraTestSummary">cassandra</option>
                 <option value="TestInfraMetadata">infra</option>
             </select>
             <div class="input-group-append">
@@ -161,82 +161,6 @@
                                 }
                             }
                         });
-
-                        //var timeFormat = 'YYYY-MM-DD';
-                        //var lineChart = document.getElementById('line').getContext('2d');
-
-                        //var config = {
-                        //    type: 'line',
-                        //    data: {
-                        //        datasets: [
-                        //            {
-                        //                label: "Avg Logical IO",
-                        //                backgroundColor: "#fff",
-                        //                borderWidth: 1,
-                        //                pointBorderWidth: 1,
-                        //                borderColor: "#f00",
-                        //                data: logicalIODate,
-                        //                fill: false,
-                        //                borderColor: 'red'
-                        //            },
-                        //            {
-                        //                label: "Avg Physical IO",
-                        //                borderWidth: 1,
-                        //                pointBorderWidth: 0,
-                        //                backgroundColor: "#fff",
-                        //                data: physicalIOData,
-                        //                fill: false,
-                        //                borderColor: 'blue'
-                        //            }
-                        //        ]
-                        //    },
-                        //    options: {
-                        //        legend: {
-                        //            display: true,
-                        //            labels: {
-                        //                usePointStyle: true,
-                        //            },
-                        //            onClick: () => { }, // disable legend onClick functionality that filters datasets
-                        //        },
-                        //        responsive: true,
-                        //        title: {
-                        //            display: true,
-                        //            text: "Chart.js Time Scale"
-                        //        },
-                        //        elements: {
-                        //            point: {
-                        //                radius: 0,
-                        //                hitRadius: 5,
-                        //                hoverRadius: 3,
-                        //            },
-                        //        },
-                        //        scales: {
-                        //            x :{
-                        //                type: "time",
-                        //                time: {
-                        //                    format: timeFormat,
-                        //                    tooltipFormat: 'll'
-                        //                },
-                        //                displayFormats: {
-                        //                    year: 'YYYY'
-                        //                },
-                        //                scaleLabel: {
-                        //                    display: true,
-                        //                    labelString: 'Date'
-                        //                }
-                        //            },
-                        //            y: {
-                        //                scaleLabel: {
-                        //                    display: true,
-                        //                    labelString: 'value'
-                        //                }
-                        //            }
-                        //        }
-                        //    }
-                        //};
-
-                        //var myLineChart = new Chart(lineChart, config);
-
                     });
                 </script>
             }
