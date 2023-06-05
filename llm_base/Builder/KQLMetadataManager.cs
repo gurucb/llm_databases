@@ -24,12 +24,12 @@ namespace SyntheticsGPTKQL
         'ResourceNetwork': 'ProvisionIDVMId,MACAddress,IPv4Address,IPv4Subnet,IPv6,ResourcePersistID',
         'TcpPingResults': 'TestIDDeploymentID,WorkloadID,TestExecConfigID,ExecutionID,IterationStartTime,IterationEndTime,EnvironmentName,Iteration,SequenceId,SeqStartDateTime,SeqEndDateTime,HostIp,SignalText,LatencyValue,TcppingPersistanceId,ErrorDescription',
         'CassandraTestSummary':'op_rate,total_operation_time,DeploymentID, WorkloadID, TestExecConfigID, TestType',
-        'TestRunDetails': 'TestID,DeploymentID,WorkloadID,TestExecConfigID,ExecutionID,TestInvocation,IterationStartTime,EnvironmentName,Iteration',
+        'TestRunDetails': 'TestID,DeploymentID,WorkloadID,TestExecConfigID,TestName,ExecutionID,TestInvocation,IterationStartTime,EnvironmentName,Iteration,IterationEndTime',
         'TestExecGroup': 'TestExecGroupID,TestExecGroupName',
-        'Sybase_Results': 'svr_nm,metric,MPA_SpidCt,MPA_TPS,MPA_LIO_k_PerSec,MPA_PIO_k_PerSec,MPA_CPU_k_PerSec,UTL_PoolNm,UTL_Pct,MPW_WtDesc,MPW_WtTmPct,MSL_SpinNm,MSL_k_SpinsPerSec,MDIO_DevNm,MDIO_WritesPerESec,MDIO_ReadsPerESec,MDIO_Reads,MDIO_Writes,MPA_LIO_Ratio,MPA_Pwrt_k_PerSec,MPA_BlockedTm,MPA_BlockedCt,sample_dur_secs,bench_run_desc,par_batch_id,num_parallel,threads,db_nm,monInsertedTime',
-        'SockPerf_Results': 'TestID ,DeploymentID ,WorkloadID ,TestExecConfigID ,ExecutionID ,avg-latency',
+        'Sybase_Results': 'svr_nm,metric,MPA_SpidCt,MPA_TPS,MPA_LIO_k_PerSec,MPA_PIO_k_PerSec,MPA_CPU_k_PerSec,UTL_PoolNm,UTL_Pct,MPW_WtDesc,MPW_WtTmPct,MSL_SpinNm,MSL_k_SpinsPerSec,MDIO_DevNm,MDIO_WritesPerESec,MDIO_ReadsPerESec,MDIO_Reads,MDIO_Writes,MPA_LIO_Ratio,MPA_Pwrt_k_PerSec,MPA_BlockedTm,MPA_BlockedCt,par_batch_id,num_parallel,threads,db_nm,monInsertedTime',
+        'SockPerf_Results': 'TestID ,DeploymentID ,WorkloadID ,TestExecConfigID ,ExecutionID ,[avg-latency]',
         'DeploymentMetadata':'DeploymentID, DeploymentName, DeploymentVersion, DeploymentPrefix',
-        'TestInfraMetadata': 'WorkloadID, TestName, WorkloadName'}";
+        'TestInfraMetadata': 'WorkloadID, TestName,WorkloadName'}";
         public override List<String> getObjectMetadata(List<String> objectName)
         {
 

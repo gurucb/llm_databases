@@ -14,13 +14,13 @@ namespace SyntheticsGPTKQL
             List<String> prompts = new List<String>();
             System.Console.WriteLine("**************************");
 
-            prompts.Add("Given an input generate a syntactically correct SQL Query Language for Microsoft SQL Server.");
+            prompts.Add("Given an input generate a syntactically correct SQL Query for MSSQL. In Query qualify columns as <TableName>.<ColumnName> format.");
             prompts.Add("### SQL Tables with their properties:\n");
             foreach(String table in tableschema)
             {
                 prompts.Add(table);
             }
-            prompts.Add("\n### "+userPrompt+"\n SELECT ");
+            prompts.Add("\n### "+userPrompt+ "\nSELECT ");
 
             return prompts;
         }
